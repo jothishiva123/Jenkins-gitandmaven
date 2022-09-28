@@ -1,35 +1,37 @@
-def call (def mvncmd) {
-	try {
-		echo "*****************************************************"
-		echo "Maven build Started..."
-		bat 'mvn '+mvncmd
-		echo "Maven build completed successfully"
-		echo "*****************************************************"
-	}
-	catch(Exception th) {
-		echo "Maven build Failed. Please Check console log"
-		throw th;
-	}
-}
-def call (def giturl, def branch,def Git_Cred_ID) {
-	echo ""
-	echo "********** Git URL:  ${giturl} **********"
-	echo ""
-	echo "********** Git Branch:  ${branch} **********"
-	echo ""
-	if(giturl.contains("github.com"))
-	{
-	checkout([$class: 'GitSCM', branches: [[name: branch ]], extensions: [], userRemoteConfigs: [
-			[credentialsId: Git_Cred_ID, url: giturl]
-		]])
-	}
-	else
-	{
-		error("Please Provide valid github url")
-	}
-}
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
+@Library('shared-library@main') _
+pipeline {
+agent any 
+     tools {
+         maven 'maven3'
+         }
+      stages {
+        stage ('Build maven') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'jothishiva123', url: 'https://github.com/jothishiva123/mvn.git']]])
+                sh 'mvn clean package'
+                echo 'Build Completed'
+                }
+        }
+        
+        stage ('Build Docker image') {
+            steps {
+                script {
+                    sh 'docker build -t jothimanikandanraja/mynewapp .'
+                }
+            }
+        }
+         stage('Push Docker Image') {
+            steps {
+                script {
+                 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
+                     sh 'docker login -u jothimanikandanraja -p ${dockerhubpwd}'
+  
+
+                    
+                 }  
+                 sh 'docker push jothimanikandanraja/mynewapp'
+                }
+            }
+        }
+    }
+}  

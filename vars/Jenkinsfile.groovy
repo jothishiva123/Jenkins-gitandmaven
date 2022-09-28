@@ -1,4 +1,4 @@
-@Library('shared-library@main') _
+def call(String mvnaction) 
 pipeline {
 agent any 
      tools {

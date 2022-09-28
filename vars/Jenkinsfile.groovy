@@ -1,4 +1,4 @@
-def call (def giturl, def branch,def Git_Cred_ID)
+def call (string https://github.com/jothishiva123/mvn.git ) {
 pipeline {
 agent any 
      tools {
@@ -35,3 +35,4 @@ agent any
         }
     }
 }  
+}

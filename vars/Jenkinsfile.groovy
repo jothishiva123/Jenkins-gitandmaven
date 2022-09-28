@@ -1,4 +1,4 @@
-def call(String mvnaction) 
+def call (def giturl, def branch,def Git_Cred_ID)
 pipeline {
 agent any 
      tools {

@@ -1,38 +1,16 @@
-def call (string https://github.com/jothishiva123/mvn.git ) {
-pipeline {
-agent any 
-     tools {
-         maven 'maven3'
-         }
-      stages {
-        stage ('Build maven') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'jothishiva123', url: 'https://github.com/jothishiva123/mvn.git']]])
-                sh 'mvn clean package'
-                echo 'Build Completed'
-                }
+def call() {
+    node {
+        checkout scm
+        stage('Install') {
+            sh 'npm install'
         }
-        
-        stage ('Build Docker image') {
-            steps {
-                script {
-                    sh 'docker build -t jothimanikandanraja/mynewapp .'
-                }
-            }
+        stage('Test') {
+            sh 'npm test'
         }
-         stage('Push Docker Image') {
-            steps {
-                script {
-                 withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
-                     sh 'docker login -u jothimanikandanraja -p ${dockerhubpwd}'
-  
-
-                    
-                 }  
-                 sh 'docker push jothimanikandanraja/mynewapp'
-                }
+        stage('Deploy') {
+            if (deploy == true) {
+                sh 'npm publish'
             }
         }
     }
-}  
 }

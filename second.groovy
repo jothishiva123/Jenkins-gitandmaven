@@ -19,16 +19,7 @@ def call(String :repoUrl) {
                 sh 'mvn clean package'
               
                 }
-        }
-        stage('Code Analysis') {
-          steps {
-            withSonarQubeEnv('SonarQube') {
-              sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-                                                                      }
-                             }
-                                           }
-              
-        
+        } 
         stage ('Build Docker image') {
             steps {
                 script {

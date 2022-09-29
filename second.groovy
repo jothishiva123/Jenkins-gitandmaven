@@ -1,4 +1,4 @@
-def call(String https://github.com/jothishiva123/mvn.git) {
+def call(String :repoUrl) {
   pipeline {
        agent any
        tools {
@@ -9,23 +9,25 @@ def call(String https://github.com/jothishiva123/mvn.git) {
          stage("Checkout Code") {
                steps {
                    git branch: 'main',
-                       url: "${https://github.com/jothishiva123/mvn.git}" ,
-                     credentialsId: 'jothishiva123'
+                       url: "${repoUrl}" ,
+                     credentialsId: 'github'
                }
            }
-pipeline {
-agent any 
-     tools {
-         maven 'maven3'
-         }
       stages {
-        stage ('Build maven') {
+        stage ("MVN Build") {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'jothishiva123', url: 'https://github.com/jothishiva123/mvn.git']]])
                 sh 'mvn clean package'
-                echo 'Build Completed'
+              
                 }
         }
+        stage('Code Analysis') {
+          steps {
+            withSonarQubeEnv('SonarQube') {
+              sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                                                                      }
+                             }
+                                           }
+              
         
         stage ('Build Docker image') {
             steps {

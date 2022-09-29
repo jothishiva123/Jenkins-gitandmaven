@@ -1,4 +1,5 @@
-def call (String  https://github.com/jothishiva123/mvn.git, string credentialsId: 'your-credentials-id') {
+def call (String https://github.com/jothishiva123/mvn.git) {
+def call (String credentialsId: 'your-credentials-id')
 pipeline {
 agent any 
      tools {

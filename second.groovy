@@ -1,5 +1,18 @@
-def call (String https://github.com/jothishiva123/mvn.git) {
-def call (String credentialsId: 'your-credentials-id')
+def call(String repoUrl) {
+  pipeline {
+       agent any
+       tools {
+           maven 'M2_HOME'
+          
+       }
+       stages {
+         stage("Checkout Code") {
+               steps {
+                   git branch: 'main',
+                       url: "${repoUrl}" ,
+                     credentialsId: 'github'
+               }
+           }
 pipeline {
 agent any 
      tools {

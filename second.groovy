@@ -1,4 +1,4 @@
-def call (String https://github.com/jothishiva123/mvn.git) {
+def call (def call String https://github.com/jothishiva123/mvn.git) {
 pipeline {
 agent any 
      tools {

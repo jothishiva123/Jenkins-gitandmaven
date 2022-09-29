@@ -1,4 +1,4 @@
-def call(String repoUrl) {
+def call(String https://github.com/jothishiva123/mvn.git) {
   pipeline {
        agent any
        tools {
@@ -9,8 +9,8 @@ def call(String repoUrl) {
          stage("Checkout Code") {
                steps {
                    git branch: 'main',
-                       url: "${repoUrl}" ,
-                     credentialsId: 'github'
+                       url: "${https://github.com/jothishiva123/mvn.git}" ,
+                     credentialsId: 'jothishiva123'
                }
            }
 pipeline {
